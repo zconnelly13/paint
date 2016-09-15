@@ -1,0 +1,1385 @@
+<html>
+<head>
+<title>
+Paint!
+</title>
+<style type="text/css">
+#smenu {
+position: absolute;
+z-index:10000;
+top:0px;
+left:0px;
+display: none;
+background-color: white;
+border-style: solid;
+border-color: rgb(100,100,255);
+border-width: 2;
+cursor: pointer;
+}
+#loc {
+position: absolute;
+z-index: 5;
+top: 0px;
+left: 0px;
+display: none;
+}
+#textsel {
+position:absolute;
+background-color: white;
+z-index: 9002;
+top: 314px;
+left: 0px;
+border-color: black;
+border-style: solid;
+border-width: 1px;
+display: none;
+}
+#mycol {
+background: black;
+width:20px;
+height:20px;
+padding: 1px 10px 1px 35px;
+}
+#colsel {
+position:absolute;
+background-color: white;
+z-index: 9002;
+top: 40px;
+left: 100px;
+border-style:solid;
+border-width:1px;
+border-color: black;
+display: none;
+}
+#curcol {
+background: black;
+padding: 1px 10px 1px 50px;
+}
+#cwheel {
+display: none;
+}
+#selmes {
+display: none;
+}
+#tehcols {
+display: block;
+}
+#canhid {
+display: none;
+}
+#inst3 {
+display: block;
+}
+#inst2 {
+display: none;
+}
+#inst {
+display: none;
+}
+#can{ 
+background: black;
+padding: 1px 1px 1px 1px;
+margin: 2px 2px 2px 2px;
+width: 300px;
+}
+#cols{ 
+background: black; 
+padding: 1px 1px 1px 1px;
+width: 15px;
+}
+#tols{
+background: black;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols2{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols3{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols4{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols5{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols6{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols7{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols8{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols9{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols10{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#tols11{
+background: white;
+padding: 1px 1px 1px 1px;
+width:20px;
+height:20px;
+}
+#siz{ 
+background: blue; 
+padding: 5px 2px 5px 1px;
+}
+#siz2{ 
+background: white; 
+padding: 5px 2px 5px 1px;
+}
+#siz3{ 
+background: white; 
+padding: 5px 2px 5px 1px;
+}
+body {
+width: 298;
+height: 335;
+}
+</style>
+<script type='text/javascript'>
+function load() {
+for (i=0;i<=50;i++) {
+name = 'arch' + i;
+data = 'x';
+localStorage.setItem(name,data);
+}
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "rgb(255,255,255)";
+ctx.fillRect (0, 0, 300, 300);
+name = "imagesource";
+sometink = localStorage.getItem(name);
+wname = 0;
+name = 'arch0';
+localStorage.setItem(name,sometink);
+img = new Image();
+img.src = sometink;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+name = "color";
+color = localStorage.getItem(name);
+if (color == null ) {
+color = "rgb(0,0,0)";
+}
+ccol(color);
+name = "tool";
+tool = localStorage.getItem(name);
+if (tool == null) {
+tool = 'pencil';
+}
+ctool(tool);
+name = "oldx";
+data = null;
+localStorage.setItem(name,data);
+name = "oldy";
+localStorage.setItem(name,data);
+name = "bsize";
+bsize = localStorage.getItem(name);
+if (bsize == null) {
+bsize = 1;
+}
+csiz(bsize);
+name = 'wheel';
+data = localStorage.getItem(name);
+if (data == 1) {
+wheel();
+} else {
+unwheel();
+}
+name = 'r';
+data = localStorage.getItem(name);
+if (data != null ) {
+document.getElementById('red').value = data;
+} else {
+document.getElementById('red').value = 0;
+}
+name = 'g';
+data = localStorage.getItem(name);
+if (data != null ) {
+document.getElementById('green').value = data;
+} else {
+document.getElementById('green').value = 0;
+}
+name = 'b';
+data = localStorage.getItem(name);
+if (data != null ) {
+document.getElementById('blue').value = data;
+} else {
+document.getElementById('blue').value = 0;
+}
+check();
+}
+function draw() {
+hide();
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = color;
+if (mpressed == 1) {
+if (tool == 'text') {
+mx4 = window.event.clientX-10;
+my4 = window.event.clientY-10;
+name = "arch" + wname;
+data = localStorage.getItem(name);
+img = new Image();
+img.src = data;
+document.getElementById('textsel').style.top = my4+15;
+document.getElementById('loc').style.top = my4+5;
+document.getElementById('loc').style.left = mx4+7;
+document.getElementById('textsel').style.display = 'block';
+document.getElementById('loc').style.display = 'block';
+puttext();
+}
+if (tool == 'dropper') {
+var mx3 = window.event.clientX-10;
+var my3 = window.event.clientY-10;
+var data = ctx.getImageData(mx3,my3,1,1).data;
+var col = 'rgb(' + data[0] + ',' + data[1] + ',' + data[2] + ')';
+ccol(col);
+}
+if (tool == 'rectangle') {
+var mx2 = window.event.clientX-10;
+var my2 = window.event.clientY-10;
+name = "arch" + wname;
+data = localStorage.getItem(name);
+img = new Image();
+img.src = data;
+ctx.drawImage(img,0,0);
+ctx.lineWidth = bsize*bsize;
+ctx.strokeStyle = color;
+ctx.beginPath();
+if (selsx < mx2) {
+ctx.moveTo(selsx+ (bsize*bsize/2),selsy);
+ctx.lineTo(selsx+ (bsize*bsize/2),my2);
+} else {
+ctx.moveTo(selsx- (bsize*bsize/2),selsy);
+ctx.lineTo(selsx- (bsize*bsize/2),my2);
+}
+ctx.moveTo(selsx,selsy);
+ctx.lineTo(mx2,selsy);
+if (selsx < mx2) {
+ctx.moveTo(mx2- (bsize*bsize/2),selsy);
+ctx.lineTo(mx2- (bsize*bsize/2),my2);
+} else {
+ctx.moveTo(mx2+ (bsize*bsize/2),selsy);
+ctx.lineTo(mx2+ (bsize*bsize/2),my2);
+}
+ctx.moveTo(selsx,my2);
+ctx.lineTo(mx2,my2);
+ctx.stroke();
+}
+if (tool == 'line') {
+name = "arch" + wname;
+data = localStorage.getItem(name);
+img = new Image();
+img.src = data;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+var moux = window.event.clientX - 10;
+var mouy = window.event.clientY - 10;
+ctx.lineWidth = bsize*bsize;
+ctx.strokeStyle = color;
+ctx.beginPath();
+ctx.moveTo(selsx,selsy);
+ctx.lineTo(moux,mouy);
+ctx.stroke();
+}
+if (tool == 'circle') {
+name = "arch" + wname;
+data = localStorage.getItem(name);
+img = new Image();
+img.src = data;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+var moux = window.event.clientX - 10;
+var mouy = window.event.clientY - 10;
+var lx = (moux-selsx);
+var ly = (mouy-selsy);
+var r1 = (lx * lx) + (ly * ly);
+var r = Math.sqrt(r1);
+ctx.lineWidth = bsize*bsize;
+ctx.strokeStyle = color;
+ctx.beginPath();
+ctx.arc(selsx,selsy,r,0,Math.PI*2,true);
+ctx.stroke();
+}
+if (tool == 'brush'){
+dowheel();
+newx = window.event.clientX-10;
+newy = window.event.clientY-10;
+name = "oldx";
+oldx = localStorage.getItem(name);
+name = "oldy";
+oldy = localStorage.getItem(name);
+if (oldx == null) {
+oldx = newx;
+}
+if (oldy == null) {
+oldy = newy;
+}
+ctx.beginPath();
+ctx.lineWidth = (10*bsize) + 3;
+ctx.strokeStyle = color;
+ctx.moveTo(oldx,oldy);
+ctx.lineTo(newx,newy);
+ctx.stroke();
+name = "oldx";
+data = newx;
+localStorage.setItem(name,data);
+name = "oldy";
+data = newy;
+localStorage.setItem(name,data);
+ctx.fillRect (window.event.clientX - (10+(bsize*5)),window.event.clientY - (10+(bsize*5)), 10 * bsize, 10 * bsize);
+}
+if (tool == 'spray') {
+dowheel();
+for (i=0;i<=bsize * 3;i++) {
+x = window.event.clientX-10;
+y = window.event.clientY-10;
+var randx = Math.floor(Math.random()*17) - 8;
+var randy = Math.floor(Math.random()*17) - 8;
+var randx = randx * bsize;
+var randy = randy * bsize;
+ctx.fillRect (x + randx,y + randy,1,1);
+}
+}
+if (tool == 'select') {
+mx = window.event.clientX -10;
+my = window.event.clientY -10;
+if ((selected == '1') && (x1 < mx) && (mx < x2) && (my > y1) && (my < y2)) {
+if (x1 != 0) {
+posx = mx - x1;
+posy = my - y1;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = 'white';
+ctx.fillRect(x1-1,y1-1,x2-x1+2,y2-y1+2);
+name = 'arch' + wname;
+data = canvas.toDataURL();
+img.src = data;
+}
+x1 = 0;
+y1 = 0;
+x2 = 300;
+y2 = 300;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+var canvas2 = document.getElementById("canvas2");
+var ctx2 = canvas.getContext("2d");
+data = canvas2.toDataURL();
+img3 = new Image();
+img3.src = data;
+ctx.drawImage(img3,mx-posx,my-posy);
+} else if (selected == '1') {
+selected = '0';
+} else {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+name = "arch" + wname;
+data = localStorage.getItem(name);
+img = new Image();
+img.src = data;
+ctx.drawImage(img,0,0);
+ctx.beginPath();
+ctx.lineWidth = 1;
+ctx.strokeStyle = 'black';
+ctx.moveTo(selsx,selsy);
+ctx.lineTo(selsx,my);
+ctx.stroke();
+ctx.beginPath();
+ctx.lineWidth = 1;
+ctx.strokeStyle = 'black';
+ctx.moveTo(selsx,selsy);
+ctx.lineTo(mx,selsy);
+ctx.stroke();
+ctx.beginPath();
+ctx.lineWidth = 1;
+ctx.strokeStyle = 'black';
+ctx.moveTo(mx,selsy);
+ctx.lineTo(mx,my);
+ctx.stroke();
+ctx.beginPath();
+ctx.lineWidth = 1;
+ctx.strokeStyle = 'black';
+ctx.moveTo(selsx,my);
+ctx.lineTo(mx,my);
+ctx.stroke();
+canvas2 = document.getElementById("canvas2");
+ctx2 = canvas2.getContext("2d");
+data = canvas.toDataURL();
+img2 = new Image();
+img2.src = data;
+if ((selsx < mx) && (selsy < my)) {
+document.getElementById("canvas2").width = mx - selsx-2;
+document.getElementById("canvas2").height = my - selsy-2;
+ctx2.drawImage(img2,-selsx-1,-selsy-1);
+}
+paintit();
+}
+}
+if (tool == 'fill') {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var mousex = window.event.clientX-10;
+var mousey = window.event.clientY-10;
+var changeto = color;
+var selcol = ctx.getImageData(mousex,mousey,1,1).data;
+var selcol = "rgb(" + selcol[0] + "," + selcol[1] + "," + selcol[2] + ")";
+if (changeto != selcol) {
+flood(mousex,mousey,selcol,changeto);
+}
+mup(1);
+}
+if (tool == 'pencil'){
+dowheel();
+newx = window.event.clientX-10;
+newy = window.event.clientY-10;
+name = "oldx";
+oldx = localStorage.getItem(name);
+name = "oldy";
+oldy = localStorage.getItem(name);
+if (oldx == null) {
+oldx = newx;
+}
+if (oldy == null) {
+oldy = newy;
+}
+ctx.beginPath();
+ctx.lineWidth = 1;
+ctx.strokeStyle = color;
+ctx.moveTo(oldx,oldy);
+ctx.lineTo(newx,newy);
+ctx.stroke();
+name = "oldx";
+data = newx;
+localStorage.setItem(name,data);
+name = "oldy";
+data = newy;
+localStorage.setItem(name,data);
+}
+if (tool == 'eraser'){
+ctx.fillStyle = 'rgb(255,255,255)';
+ctx.fillRect (window.event.clientX - (10+(bsize*5)),window.event.clientY - (10+(bsize*5)), 10 * bsize, 10 * bsize);
+newx = window.event.clientX-10;
+newy = window.event.clientY-10;
+name = "oldx";
+oldx = localStorage.getItem(name);
+name = "oldy";
+oldy = localStorage.getItem(name);
+if (oldx == null) {
+oldx = newx;
+}
+if (oldy == null) {
+oldy = newy;
+}
+ctx.beginPath();
+ctx.lineWidth = (12 * bsize);
+ctx.strokeStyle = 'white';
+ctx.moveTo(oldx,oldy);
+ctx.lineTo(newx,newy);
+ctx.stroke();
+name = "oldx";
+data = newx;
+localStorage.setItem(name,data);
+name = "oldy";
+data = newy;
+localStorage.setItem(name,data);
+}
+}
+}
+function mdown() {
+if ((tool != 'pencil') && (tool != 'brush') && (tool != 'spray') && (tool != 'eraser')) {
+unwheel();
+}
+mpressed = 1;
+selsx = window.event.clientX -10;
+selsy = window.event.clientY -10;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+if (tool == 'pencil') {
+ctx.fillStyle = color;
+ctx.fillRect (window.event.clientX - 10,window.event.clientY - 10, 1,1);
+}
+if (tool == 'brush') {
+ctx.fillStyle = color;
+ctx.fillRect (window.event.clientX - 13,window.event.clientY - 13, 10,10);
+}
+if (tool == 'eraser') {
+ctx.fillStyle = 'white'
+ctx.fillRect (window.event.clientX - 13,window.event.clientY - 13, 10,10);
+}
+name = "oldx";
+data = window.event.clientX-10;
+localStorage.setItem(name,data);
+name = "oldy";
+data = window.event.clientY-10;
+localStorage.setItem(name,data);
+}
+function mup(save) {
+mpressed = 0;
+if (tool == 'text') {
+document.getElementById('text').focus();
+}
+if (tool != 'text') {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+if (save == 0) {
+wname++;
+name = 'arch' + wname;
+data = canvas.toDataURL();
+localStorage.setItem(name,data);
+}
+name = "oldx";
+data = null;
+localStorage.setItem(name,data);
+name = "oldy";
+localStorage.setItem(name,data);
+name = "imagesource";
+var data = canvas.toDataURL();
+localStorage.setItem(name,data);
+if (tool == 'select') {
+document.getElementById("canvas2").width = mx-selsx-2;
+document.getElementById("canvas2").height = my - selsy-2;
+ctx2.drawImage(img2,-selsx-1,-selsy-1);
+x1 = selsx;
+y1 = selsy;
+x2 = mx;
+y2 = my;
+selected = '1';
+}
+}
+if (save == 4) {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+wname++;
+name = 'arch' + wname;
+data = canvas.toDataURL();
+localStorage.setItem(name,data);
+name = "oldx";
+data = null;
+localStorage.setItem(name,data);
+name = "oldy";
+localStorage.setItem(name,data);
+name = "imagesource";
+var data = canvas.toDataURL();
+localStorage.setItem(name,data);
+}
+}
+function ccol(col) {
+document.getElementById("curcol").style.background = col;
+color = col;
+name = "color";
+data = col;
+localStorage.setItem(name,data);
+}
+function ctool(change) {
+if ((tool == 'text') && (change != 'text')) {
+nvm();
+}
+if ((change != 'pencil') && (change != 'brush') && (change != 'spray') && (change != 'eraser')) {
+unwheel();
+}
+if (change == 'select') {
+document.getElementById('tehcols').style.display = 'none';
+document.getElementById('selmes').style.display = 'block';
+} else {
+document.getElementById('selmes').style.display = 'none';
+document.getElementById('tehcols').style.display = 'block';
+}
+tool = change;
+if (change == 'pencil') {
+document.getElementById('tols').style.background = 'black';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = "tool";
+data = 'pencil';
+localStorage.setItem(name,data);
+}
+if (change == 'brush') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'black';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = "tool";
+data = 'brush';
+localStorage.setItem(name,data);
+}
+if (change == 'eraser') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'black';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = "tool";
+data = 'eraser';
+localStorage.setItem(name,data);
+}
+if (change == 'spray') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'black';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = 'tool';
+data = 'spray';
+localStorage.setItem(name,data);
+}
+if (change == 'select') {
+selected = '0';
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'black';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = 'tool';
+data = 'select';
+localStorage.setItem(name,data);
+}
+if (change == 'fill') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'black';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = 'tool';
+data = 'fill';
+localStorage.setItem(name,data);
+}
+if (change == 'circle') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'black';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = 'tool';
+data = 'circle';
+localStorage.setItem(name,data);
+}
+if (change == 'line') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'black';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = 'tool';
+data = 'line';
+localStorage.setItem(name,data);
+}
+if (change == 'rectangle') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'black';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'white';
+name = 'tool';
+data = 'rectangle';
+localStorage.setItem(name,data);
+}
+if (change == 'dropper') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'black';
+document.getElementById('tols11').style.background = 'white';
+name = 'tool';
+data = 'dropper';
+localStorage.setItem(name,data);
+}
+if (change == 'text') {
+document.getElementById('tols').style.background = 'white';
+document.getElementById('tols2').style.background = 'white';
+document.getElementById('tols3').style.background = 'white';
+document.getElementById('tols4').style.background = 'white';
+document.getElementById('tols5').style.background = 'white';
+document.getElementById('tols6').style.background = 'white';
+document.getElementById('tols7').style.background = 'white';
+document.getElementById('tols8').style.background = 'white';
+document.getElementById('tols9').style.background = 'white';
+document.getElementById('tols10').style.background = 'white';
+document.getElementById('tols11').style.background = 'black';
+name = 'tool';
+data = 'text';
+localStorage.setItem(name,data);
+}
+}
+function csiz (siz) {
+bsize = siz;
+if (siz == 1) {
+document.getElementById('siz').style.background = 'blue';
+document.getElementById('siz2').style.background = 'white';
+document.getElementById('siz3').style.background = 'white';
+name = "bsize";
+data = '1';
+localStorage.setItem(name,data);
+}
+if (siz == 2) {
+document.getElementById('siz').style.background = 'white';
+document.getElementById('siz2').style.background = 'blue';
+document.getElementById('siz3').style.background = 'white';
+name = "bsize";
+data = '2';
+localStorage.setItem(name,data);
+}
+if (siz == 4) {
+document.getElementById('siz').style.background = 'white';
+document.getElementById('siz2').style.background = 'white';
+document.getElementById('siz3').style.background = 'blue';
+name = "bsize";
+data = '4';
+localStorage.setItem(name,data);
+}
+}
+function convert() {
+document.getElementById("inst").style.display = 'block';
+}
+function newcanvas() {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+name = 'whicharchive';
+wa = localStorage.getItem(name);
+if (wa == null) {
+wa = 0;
+name = 'whicharchive';
+data = 0;
+localStorage.setItem(name,data);
+}
+name = "archive" + wa;
+pic = canvas.toDataURL();
+var currentTime = new Date()
+var month = currentTime.getMonth() + 1
+var day = currentTime.getDate()
+var year = currentTime.getFullYear()
+var findate = month + "/" + day + "/" + year + " - ";
+var hours = currentTime.getHours()
+var minutes = currentTime.getMinutes()
+if (minutes < 10){
+minutes = "0" + minutes
+}
+if(hours > 11){
+var nar = "PM";
+} else {
+var nar = "AM";
+}
+if(hours > 12) {
+hours = hours - 12;
+}
+var fintime = hours + ":" + minutes + " " + nar;
+data = "<br><b><font face='Verdana' size='2'>" + findate + fintime + "</font></b><br><font face='Verdana' size='2'><img src='" + pic + "'></img></font><br>";
+localStorage.setItem(name,data);
+ctx.fillStyle = "rgb(255,255,255)";
+ctx.fillRect (0, 0, 300, 300);
+wa++;
+name = 'whicharchive';
+data = wa;
+localStorage.setItem(name,data);
+if (tool == 'text') {
+data = canvas.toDataURL();
+img.src = data;
+}
+mup(4);
+}
+function convert2() {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+image = canvas.toDataURL();
+window.open(image);
+}
+function debugzor() {
+name = 'arch1';
+data = localStorage.getItem(name);
+alert(wname);
+}
+function dn() {
+}
+function undo(x) {
+if (wname != 0) {
+if (x==1) {
+wname--;
+}
+name = 'arch' + wname;
+undodata = localStorage.getItem(name);
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+img = new Image();
+img.src = undodata;
+ctx.drawImage(img,0,0);
+}
+}
+function redo(x) {
+if (x==1) {
+wname++;
+}
+name = 'arch' + wname;
+undodata = localStorage.getItem(name);
+if (undodata == 'x') {
+wname--;
+}
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+img = new Image();
+img.src = undodata;
+ctx.drawImage(img,0,0);
+}
+function addimage(x) {
+usrimg = document.getElementById('imgurl').value;
+img = new Image();
+img.src = usrimg;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+if (x == 1) {
+document.getElementById('inst2').style.display = 'none';
+document.getElementById('inst3').style.display = 'block';
+mup(4);
+}
+}
+function addimage2(e,x) {
+var unicode=e.keyCode? e.keyCode : e.charCode
+if (unicode == 13) {
+usrimg = document.getElementById('imgurl').value;
+img = new Image();
+img.src = usrimg;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+if (x == 1) {
+document.getElementById('inst2').style.display = 'none';
+document.getElementById('inst3').style.display = 'block';
+mup(4);
+}
+}
+}
+function paintit() {
+canvas2 = document.getElementById("canvas2");
+ctx2 = canvas2.getContext("2d");
+data = canvas.toDataURL();
+img2 = new Image();
+img2.src = data;
+document.getElementById("canvas2").width = mx-selsx-2;
+document.getElementById("canvas2").height = my - selsy-2;
+ctx2.drawImage(img2,-selsx-1,-selsy-1);
+}
+
+function flood(x,y,target,replacement) {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var Qx = new Array();
+var Qy = new Array();
+var thiscol = ctx.getImageData(x,y,1,1).data;
+var thiscol = "rgb(" + thiscol[0] + "," + thiscol[1] + "," + thiscol[2] + ")";
+if (thiscol != target) {
+return;
+}
+Qx.push(x);
+Qy.push(y);
+while (Qx.length >= 1) {
+nx = Qx[0];
+ny = Qy[0];
+var thiscol = ctx.getImageData(nx,ny,1,1).data;
+var thiscol = "rgb(" + thiscol[0] + "," + thiscol[1] + "," + thiscol[2] + ")";
+if (thiscol == target) {
+ctx.fillStyle = replacement;
+ctx.fillRect (nx,ny,1,1);
+}
+Qx.shift();
+Qy.shift();
+var thiscol = ctx.getImageData(nx-1,ny,1,1).data;
+var thiscol = "rgb(" + thiscol[0] + "," + thiscol[1] + "," + thiscol[2] + ")";
+if (thiscol == target) {
+ctx.fillStyle = replacement;
+ctx.fillRect (nx-1,ny,1,1);
+Qx.push(nx-1);
+Qy.push(ny);
+}
+var thiscol = ctx.getImageData(nx+1,ny,1,1).data;
+var thiscol = "rgb(" + thiscol[0] + "," + thiscol[1] + "," + thiscol[2] + ")";
+if (thiscol == target) {
+ctx.fillStyle = replacement;
+ctx.fillRect (nx+1,ny,1,1);
+Qx.push(nx+1);
+Qy.push(ny);
+}
+var thiscol = ctx.getImageData(nx,ny-1,1,1).data;
+var thiscol = "rgb(" + thiscol[0] + "," + thiscol[1] + "," + thiscol[2] + ")";
+if (thiscol == target) {
+ctx.fillStyle = replacement;
+ctx.fillRect (nx,ny-1,1,1);
+Qx.push(nx);
+Qy.push(ny-1);
+}
+var thiscol = ctx.getImageData(nx,ny+1,1,1).data;
+var thiscol = "rgb(" + thiscol[0] + "," + thiscol[1] + "," + thiscol[2] + ")";
+if (thiscol == target) {
+ctx.fillStyle = replacement;
+ctx.fillRect (nx,ny+1,1,1);
+Qx.push(nx);
+Qy.push(ny+1);
+}
+}
+}
+function mout() {
+if (mpressed == '1') {
+mup(0);
+} else {
+mup(1);
+}
+}
+function wheel() {
+name = 'wheel';
+data = '1';
+localStorage.setItem(name,data);
+document.getElementById('cwheel').style.display = 'block';
+wcol = 4;
+}
+function unwheel() {
+name = 'wheel';
+data = '0';
+localStorage.setItem(name,data);
+document.getElementById('cwheel').style.display = 'none';
+wcol = 0;
+}
+function dowheel() {
+name = 'wheel';
+data = localStorage.getItem(name);
+wcol ++;
+if ((data == 1) && (wcol == 5)) {
+wcol = 0;
+var rand = Math.floor(Math.random()*12) + 1;
+if (rand == 1) {
+rcol = 'rgb(0,0,0)';
+}
+if (rand == 2) {
+rcol = 'rgb(255,0,0)';
+}
+if (rand == 3) {
+rcol = 'rgb(255,130,0)';
+}
+if (rand == 4) {
+rcol = 'rgb(255,209,0)';
+}
+if (rand == 5) {
+rcol = 'rgb(255,255,0)';
+}
+if (rand == 6) {
+rcol = 'rgb(117,255,0)';
+}
+if (rand == 7) {
+rcol = 'rgb(0,158,0)';
+}
+if (rand == 8) {
+rcol = 'rgb(0,210,76)';
+}
+if (rand == 9) {
+rcol = 'rgb(0,0,255)';
+}
+if (rand == 10) {
+rcol = 'rgb(112,0,255';
+}
+if (rand == 11) {
+rcol = 'rgb(255,0,255)';
+}
+if (rand == 12) {
+rcol = 'rgb(255,0,97)';
+}
+ccol(rcol);
+}
+}
+function colsel() {
+document.getElementById('colsel').style.display = 'block';
+}
+function numonly(evt) {
+var charCode = (evt.which) ? evt.which : event.keyCode
+if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+return false;
+}
+return true;
+}
+function check() {
+var r = document.getElementById('red').value;
+var g = document.getElementById('green').value;
+var b = document.getElementById('blue').value;
+if (r > 255) {
+document.getElementById('red').value = 255;
+}
+if (g > 255) {
+document.getElementById('green').value = 255;
+}
+if (b > 255) {
+document.getElementById('blue').value = 255;
+}
+var r = document.getElementById('red').value;
+var g = document.getElementById('green').value;
+var b = document.getElementById('blue').value;
+var col = "rgb(" + r + "," + g + "," + b + ")";
+document.getElementById('mycol').style.background = col;
+}
+function changed() {
+var r = document.getElementById('red').value;
+var g = document.getElementById('green').value;
+var b = document.getElementById('blue').value;
+if (r == "") {
+document.getElementById('red').value = 0;
+}
+if (g == "") {
+document.getElementById('green').value = 0;
+}
+if (b == "") {
+document.getElementById('blue').value = 0;
+}
+}
+function putcol() {
+var r = document.getElementById('red').value;
+var g = document.getElementById('green').value;
+var b = document.getElementById('blue').value;
+var col = "rgb(" + r + "," + g + "," + b + ")";
+ccol(col);
+document.getElementById('colsel').style.display = 'none';
+name = 'r';
+data = r;
+localStorage.setItem(name,data);
+name = 'g';
+data = g;
+localStorage.setItem(name,data);
+name = 'b';
+data = b;
+localStorage.setItem(name,data);
+unwheel();
+}
+function puttext() {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+var text = document.getElementById('text').value;
+var size = document.getElementById('size').value;
+var face = document.getElementById('face').value;
+ctx.font = size + 'px ' + face; 
+ctx.fillStyle = color;
+ctx.fillText(text, mx4, my4);
+}
+function nvm() {
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+document.getElementById('text').value = "";
+document.getElementById('textsel').style.display = 'none';
+document.getElementById('loc').style.display = 'none';
+}
+function done() {
+document.getElementById('text').value = "";
+document.getElementById('textsel').style.display = 'none';
+document.getElementById('loc').style.display = 'none';
+mup(4);
+redo(0);
+}
+function cevt(e) {
+var unicode=e.keyCode? e.keyCode : e.charCode
+if (unicode == 13) {
+done();
+}
+}
+function t() {
+if (tool == 'text') {
+puttext();
+}
+}
+function kdown(e) {
+var kc = e.keyCode;
+if (kc == 17) {
+cntrl = 1;
+}
+if (cntrl == 1) {
+if (kc == 80) ctool('pencil');
+if (kc == 66) ctool('brush');
+if (kc == 82) ctool('spray');
+if (kc == 68) ctool('dropper');
+if (kc == 70) ctool('fill');
+if (kc == 76) ctool('line');
+if (kc == 67) ctool('circle');
+if (kc == 81) ctool('rectangle');
+if (kc == 69) ctool('eraser');
+if (kc == 86) ctool('select');
+if (kc == 84) ctool('text');
+if (kc == 49) csiz(1);
+if (kc == 50) csiz(2);
+if (kc == 51) csiz(4);
+if (kc == 78) newcanvas();
+if (kc == 83) convert();
+if (kc == 85) colsel();
+if (kc == 90) undo(1);
+if (kc == 89) redo(1);
+if (kc == 73) {
+document.getElementById('imgurl').value = '';
+document.getElementById('submit').value = 'Submit';
+document.getElementById('inst3').style.display = 'none';
+document.getElementById('inst2').style.display = 'block';
+document.getElementById('imgurl').focus();
+}
+}
+}
+function kup(e) {
+if (e.keyCode == 17) {
+cntrl = 0;
+}
+if (cntrl == 1) {
+if (e.keyCode == 90) undo(0);
+if (e.keyCode == 89) redo(0);
+}
+}
+function opm() {
+mx = window.event.clientX;
+my = window.event.clientY;
+document.getElementById('smenu').style.top = my-35;
+document.getElementById('smenu').style.left = mx+5;
+document.getElementById('smenu').style.display = 'block';
+}
+function mod() {
+document.getElementById('dwn').style.backgroundColor = 'rgb(200,200,255)';
+document.getElementById('stg').style.backgroundColor = 'white';
+}
+function mos() {
+document.getElementById('dwn').style.backgroundColor = 'white';
+document.getElementById('stg').style.backgroundColor = 'rgb(200,200,255)';
+}
+function mom() {
+document.getElementById('dwn').style.backgroundColor = 'white';
+document.getElementById('stg').style.backgroundColor = 'white';
+}
+function hide() {
+document.getElementById('smenu').style.display = 'none';
+}
+function savetg() {
+alert('called');
+}
+</script>
+</head>
+<body onmousemove='cifhide()' onload="load();" onKeyDown='kdown(event)' onKeyUp='kup(event)'>
+<span id='smenu' onmouseout='mom()'>
+<font onclick='hide();convert();' id='dwn' color='black' size='3' face='Courier New' onmouseover='mod()'>
+Download
+<font color='white'>
+_____
+</font>
+</font>
+<br>
+<font onclick='hide();savetg();' id='stg' color='black' size='3' face='Courier New' onmouseover='mos()'>
+Save to Gallery
+</font>
+</span>
+<div id='loc'>
+<font color='black' size='2'>
+^
+</font>
+</div>
+<div id='textsel'>
+<input type='text' id='text' size='43' onkeyup='puttext();' onkeydown='cevt(event)';></input>
+<br>
+<font size='3' color='black'>Size:</font>
+<select id='size' onchange='puttext();'>
+<option>12</option>
+<option>14</option>
+<option>20</option>
+<option>36</option>
+<option>72</option>
+</select>
+<font size='3' color='black'>Font:</font>
+<select id='face' onchange='puttext();'>
+<option>Verdana</option>
+<option>Times New Roman</option>
+<option>Courier New</option>
+<option>Arial</option>
+</select>
+<br>
+<input type='button' value='Done' onmouseup='done();' onmousedown='redo(1)'></input>
+<input type='button' value='Nevermind' onclick='nvm();'></input>
+</div>
+<div id='colsel'>
+<font color='black' size='3'>Red:</font><font color='white' size='3'>G_:</font><input onkeydown="return numonly(event);" onkeyup="check();" onchange='changed()' id='red' type='text' size='1'></input>
+<br>
+<font color='black' size='3'>Green:</font><font color='white' size='3'>R</font><input onkeydown="return numonly(event);" onkeyup="check();" onchange='changed()' id='green' type='text' size='1'></input>
+<br>
+<font color='black' size='3'>Blue:</font><font color='white' size='3'>G_</font><input onkeydown="return numonly(event);" onkeyup="check();" onchange='changed()' id='blue' type='text' size='1'></input>
+<br>
+<font color='white'>:</font><span id='mycol'></span><font color='white'>:</font><input type='button' value='Done' onclick='putcol();t();'></input>
+</div>
+<div id='can'><canvas id="canvas" width="300" height="300" onmousemove='draw();' onmousedown='mdown();draw();' onmouseup='mup(0);' onmouseout='mout()'></canvas></div>
+<span id='selmes'><font color='black' size='3' >Important: Drag top-left to bottom-right</font></span>
+<span id='tehcols'>
+<table><tr>
+<td><div id='cols'><a title="Black" href="Javascript:unwheel();ccol('rgb(0,0,0)');t();"><img src="black.png"></img></a></div></td>
+<td><div id='cols'><a title="White" href="Javascript:unwheel();ccol('rgb(255,255,255)');t();"><img src="white.png"></img></a></div></td>
+<td><div id='cols'><a title="Red" href="Javascript:unwheel();ccol('rgb(255,0,0)');t();"><img src="red.png"></img></a></div></td>
+<td><div id='cols'><a title="Orange" href="Javascript:unwheel();ccol('rgb(255,130,0)');t();"><img src="orange.png"></img></a></div></td>
+<td><div id='cols'><a title="Yellow-Orange" href="Javascript:unwheel();ccol('rgb(255,209,0)');t();"><img src="yelloworange.png"></img></a></div></td>
+<td><div id='cols'><a title="Yellow" href="Javascript:unwheel();ccol('rgb(255,255,0)');t();"><img src="yellow.png"></img></a></div></td>
+<td><div id='cols'><a title="Yellow-Green" href="Javascript:unwheel();ccol('rgb(117,255,0)');t();"><img src="yellowgreen.png"></img></a></div></td>
+<td><div id='cols'><a title="Green" href="Javascript:unwheel();ccol('rgb(0,158,0)');t();"><img src="green.png"></img></a></div></td>
+<td><div id='cols'><a title="Blue-Green" href="Javascript:unwheel();ccol('rgb(0,210,76)');t();"><img src="bluegreen.png"></img></a></div></td>
+<td><div id='cols'><a title="Blue" href="Javascript:unwheel();ccol('rgb(0,0,255)');t();"><img src="blue.png"></img></a></div></td>
+<td><div id='cols'><a title="Blue-Violet" href="Javascript:unwheel();ccol('rgb(112,0,255)');t();"><img src="blueviolet.png"></img></a></div></td>
+<td><div id='cols'><a title="Violet" href="Javascript:unwheel();ccol('rgb(255,0,255)');t();"><img src="violet.png"></img></a></div></td>
+<td><div id='cols'><a title="Red-Violet" href="Javascript:unwheel();ccol('rgb(255,0,97)');t();"><img src="redviolet.png"></img></a></div></td>
+<td><a title="Color Wheel" href="Javascript:wheel();"><img src="wheel.png" width='20px' height='20px'></img></a></td>
+</tr></table>
+</span>
+<span id='inst3'>
+<table>
+<tr>
+<td><div id='tols'><a href="Javascript:ctool('pencil');"><img title='Pencil' id='pencil' src="pencil.png" width="20px" height="20px"></img></a></div></td>
+<td><div id='tols2'><a href="Javascript:ctool('brush');"><img title='Paintbrush' id='brush' src="brush.png" width="20px" height="20px"></img></a></div></td>
+<td><div id='tols4'><a href="Javascript:ctool('spray');"><img title='Spray Can' id='spray' src='spray.png' width="20px" height="20px"></img></a></div></td> 
+<td><div id='tols10'><a href="Javascript: ctool('dropper');"><img title="Dropper" id='dropper' src='dropper.png' width='20px' height='20px'></img></a></div></td>
+<td><div id='tols6'><a href="Javascript:ctool('fill');"><img title="Flood Fill" id='fill' src='fill.png' width="20px" height="20px"></img></a></div></td>
+<td><div id='tols8'><a href="Javascript:ctool('line');"><img title="Line" id='line' src='line.png' width='20px' height='20px'></img></a></div></td>
+<td><div id='tols7'><a href="Javascript:ctool('circle');"><img title="Circle" id='circle' src='circle.png' width='20px' height='20px'></img></a></div></td>
+<td><div id='tols9'><a href="Javascript:ctool('rectangle');"><img title="Rectangle" id='rectangle' src='rectangle.png' width='20px' height='20px'></img></a></div></td>
+<td><div id='tols3'><a href="Javascript:ctool('eraser');"><img title='Eraser' id='eraser' src="eraser.png" width="20px" height="20px"></img></a></div></td>
+<td><div id='tols5'><a href="Javascript:ctool('select');"><img title='Select' id='select' src='select.png' width="20px" height="20px"></img></a></div></td>
+<td><div id='tols11'><a href="Javascript:ctool('text');"><img title="Insert Text" id='it' src='text.png' width='20px' height='20px'></img></a></div></td>
+</tr></table>
+<table><tr>
+<td><a href="Javascript: colsel()"><img title="Make a Custom Color" id='macc' src='icon.png' width='20px' height='20px'></img></a></td>
+<td><a href="Javascript: 
+document.getElementById('imgurl').value = '';
+document.getElementById('submit').value = 'Submit';
+document.getElementById('inst3').style.display = 'none';
+document.getElementById('inst2').style.display = 'block';
+document.getElementById('imgurl').focus();
+"><img title='Add Image' id='image' src="image.png" width="20px" height="20px"></img></a></td>
+<td><a href="Javascript:dn();" onclick='newcanvas();'><img title="Clear Canvas" id='clearcanvas' src='new.png' width='20px' height='20px'></img></a></td>
+<td<a href="Javascript: dn();" onclick='opm();'><img title="Save" id='download' src='save.png' width='25px' height='20px'></img></a></td>
+<td><a href="Javascript:dn();" onmousedown="Javascript:undo(1);" onmouseup="undo(0);"><img title="Undo" id="undo" src="undo.png" width="20px" height="20px"></img></a></td>
+<td><a href="Javascript:dn();" onmousedown="Javascript:redo(1);" onmouseup="redo(0);"><img title="Redo" id="redo" src="redo.png" width="20px" height="20px"></img></a></td>
+<td><div id='siz'><a href="Javascript:csiz(1)"><img title='Small' src="black.png" width="5px" height="5px"></img><a></div></td>
+<td><div id='siz2'><a href="Javascript:csiz(2)"><img title='Medium' src="black.png" width="10px" height="10px"></img><a></div></td>
+<td><div id='siz3'><a href="Javascript:csiz(4)"><img title='Large' src="black.png" width="15px" height="15px"></img></a></div></td>
+<td><span id='curcol'></span></td>
+<td><span id='cwheel'><img src='wheel.png' width='20px' height='20px'></img></span></td>
+</tr></table>
+</span>
+<div id='inst'>
+<font color='black'>
+After clicking continue, right click the image and hit 'Save As...' to save
+</font>
+<br>
+<input type='button' value='Continue...' onclick='convert2();'></input>
+</div>
+<div id='inst2'>
+<font color='black'>
+Image Url-
+</font>
+<br>
+<input type='text' id='imgurl' size='31' onkeydown='addimage2(event,0);' onkeyup='addimage2(event,1);'></input>
+<input id='submit' type='submit' value='Submit' onmousedown='addimage(0);' onmouseup='addimage(1);'></input>
+</div>
+<div id='canhid'><canvas id="canvas2" width="300" height="300"></canvas></div>
+<script type="text/javascript">
+name = "imagesource";
+var sometink = localStorage.getItem(name);
+var img = new Image();
+img.src = sometink;
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+</script>
+</body>
+</html>

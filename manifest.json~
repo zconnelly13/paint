@@ -1,0 +1,12 @@
+{
+  "name": "Paint",
+  "options_page": "options.html",
+  "version": "2.2",
+  "description": "A drawing program written entirely in javascript, with the ability to download your artwork!",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "popup": "paint.html"
+  },
+"icons": { "48": "icon.png",
+          "128": "icon.png" }
+}

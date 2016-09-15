@@ -1,0 +1,246 @@
+<html>
+<head>
+<title>
+Paint- Options
+</title>
+<style type='text/css'>
+#bpic {
+border-style: solid;
+border-color: rgb(175,175,175);
+border-width: 10;
+}
+#lpic { 
+border-style: solid;
+border-color: rgb(100,100,100);
+border-width: 2;
+margin: 5;
+}
+#rcmenu {
+position: absolute;
+top:0px;
+left:0px;
+background-color: white;
+border-style: solid;
+border-color: rgb(100,100,255);
+border-width: 2;
+display: none;
+}
+#buttons {
+display: none;
+}
+#hkeys {
+position: absolute;
+left: 900px;
+top:10px;
+display: none;
+}
+#hlist {
+position: absolute;
+left:1000px;
+top: 53px;
+display: none;
+}
+#rusur {
+display: none;
+}
+</style>
+<script type='text/javascript'>
+function mover(id) {
+document.getElementById(id).style.borderColor = 'rgb(100,100,255)';
+document.getElementById(id).style.cursor = 'pointer';
+}
+function mout(id) {
+document.getElementById(id).style.borderColor = 'rgb(100,100,100)';
+}
+function cbimg(e,imgid,imgsrc) {
+if (e.button == 0) document.getElementById('bpic').src = imgsrc;
+if (e.button == 2) {
+theid = imgid;
+thesrc = imgsrc;
+document.getElementById('rcmenu').style.top = window.event.clientY-7;
+document.getElementById('rcmenu').style.left = window.event.clientX-7;
+document.getElementById('rcmenu').style.display = 'block';
+}
+}
+function hide() {
+document.getElementById('rcmenu').style.display = 'none';
+}
+function slover() {
+document.getElementById('sl').style.cursor = 'pointer';
+document.getElementById('sl').style.backgroundColor = 'rgb(200,200,255)';
+}
+function delover() {
+document.getElementById('del').style.cursor = 'pointer';
+document.getElementById('del').style.backgroundColor = 'rgb(200,200,255)';
+}
+function slout() {
+document.getElementById('sl').style.backgroundColor = 'white';
+}
+function delout() {
+document.getElementById('del').style.backgroundColor = 'white';
+}
+function sl() {
+document.getElementById('bpic').src = thesrc;
+}
+function del() {
+theid2 = theid.substring(4);
+name = "archive" + thearchnum[theid2];
+localStorage.removeItem(name);
+document.getElementById(theid).style.display = 'none';
+}
+function shb() {
+shbb = shbb * -1;
+if (shbb == 1) {
+document.getElementById('buttons').style.display='block';
+}
+if (shbb == -1) {
+document.getElementById('buttons').style.display = 'none';
+document.getElementById('rusur').style.display = 'none';
+}
+}
+function load() {
+shbb = -1;
+}
+function shk() {
+document.getElementById('hlist').style.display = 'block';
+document.getElementById('hkeys').style.display = 'block';
+}
+function ca() {
+document.getElementById('rusur').style.display = 'block';
+}
+function nvm() {
+document.getElementById('rusur').style.display = 'none';
+}
+function pwnem() {
+for (i=1000; i>= 0;i--) {
+name = "archive" + i;
+localStorage.removeItem(name);
+}
+this.location.reload();
+}
+</script>
+</head>
+<body bgcolor='rgb(10,10,10)' onClick='hide()' onload='load()'>
+<span id='hlist'>
+<font face='Verdana' size='3' color='white'>
+Control-P<br>
+Control-B<br>
+Control-R<br>
+Control-D<br>
+Control-F<br>
+Control-L<br>
+Control-C<br>
+Control-Q<br>
+Control-E<br>
+Control-V<br>
+Control-T<br>
+Control-U<br>
+Control-I<br>
+Control-N<br>
+Control-S<br>
+Control-Z<br>
+Control-Y<br>
+Control-1<br>
+Control-2<br>
+Control-3
+</font>
+</span>
+<span id='hkeys'>
+<font face='Verdana' size='4' color='white'>
+Hotkeys
+</font>
+<br>
+<br>
+<font face='Verdana' size='3' color='white'>
+Pencil:<br>
+Brush:<br>
+Spray:<br>
+Dropper:<br>
+Flood Fill:<br>
+Line:<br>
+Circle:<br>
+Rectangle:<br>
+Eraser:<br>
+Select:<br>
+Text:<br>
+Color Mixer:<br>
+Image:<br>
+New:<br>
+Save:<br>
+Undo:<br>
+Redo:<br>
+Small:<br>
+Medium:<br>
+Large:<br>
+</font>
+</span>
+<span id='rcmenu'>
+<font id='sl' onclick='sl()' onmouseout='slout()' onmouseover='slover()' face='Courier New' size='3' color='black'>
+Show Large
+</font>
+<br>
+<font id='del' onclick='del()' onmouseout='delout()' onmouseover='delover()' face='Courier New' size='3' color='black'>
+Delete
+<font id='del2' color='white'>
+____
+</font>
+</font>
+</span>
+<center>
+<font face='Courier New' size='7' color='white'>
+My Gallery
+</font>
+</center>
+<center>
+<font onmouseover="Javascript: this.style.cursor = 'pointer';" onclick='shb()' color='rgb(230,230,255)' size='1'>
+<u>Show/Hide Buttons</u>
+</font>
+</center>
+<span id='buttons'>
+<center>
+<input onmouseover="Javascript: this.style.cursor = 'pointer';" type='button' value='Clear Archive' onclick='ca()'></input>
+<input onmouseover="Javascript: this.style.cursor = 'pointer';" type='button' value='Show Hotkeys' onclick='shk()'></input>
+</center>
+</span>
+<span id='rusur'>
+<center>
+<font size='3' face='Courier New' color='white'>
+<b>
+Are you sure?
+</b>
+</font>
+<br>
+<input type='button' value='Clear It!' onclick='pwnem()'></input>
+<input type='button' value='Nevermind' onclick='nvm()'></input>
+</center>
+</span>
+<br>
+</body>
+</html>
+<script type='text/javascript'>
+thedata = new Array();
+thearchnum = new Array();
+iii = 0;
+for (i=1000;i >= 0;i--) {
+name = "archive" + i;
+data = localStorage.getItem(name);
+if ((data != null) && (data != "")) {
+a = data.indexOf("src='") + 5;
+b = data.indexOf("'></img>");
+data = data.substring(a,b);
+thedata[iii] = data;
+thearchnum[iii] = i;
+iii++;
+}
+}
+c = thedata.length - 1;
+if ((thedata[0] != null) && (thedata[0] != "")) {
+document.write("<center><img id='bpic' src='" + thedata[0] + "'></img></center><br><left>");
+} else {
+document.write("<center><img id='bpic' src='" + 'default.png' + "'></img></center><br><left>");
+}
+for (i=0;i<=thedata.length-1;i++) {
+document.write("<img oncontextmenu='return false;' style='border-style: solid;border-color: rgb(100,100,100);border-width: 2;margin: 5;' onmouseover='mover(this.id)' onmouseout='mout(this.id)' onmouseup='cbimg(event,this.id,this.src)' height=75 width=75 id='lpic" + i + "' src='" + thedata[i] + "'></img>");
+}
+document.write("</left>");
+</script>

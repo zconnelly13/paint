@@ -1,0 +1,16 @@
+{
+   "browser_action": {
+      "default_icon": "icon.png",
+      "popup": "paint.html"
+   },
+   "description": "A drawing program written entirely in javascript, with the ability to download your artwork!",
+   "icons": {
+      "128": "icon.png",
+      "48": "icon.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDk4leX3oX/L+/JuuirbdMTo7KaeK9YJiMHDXa/jwhT7PiTbMDnPLkSHs7463NkaFR6xU21rirEwmniRg82v5GlBxDHLfoLGCqaGnagnroazgxk8KdDZ76p8ozJqP/uN36NKFI8S5J6nWySdXPdOsaAF4BLf4ThglZ3l9K5/XPAmQIDAQAB",
+   "name": "Paint",
+   "options_page": "options.html",
+   "update_url": "http://clients2.google.com/service/update2/crx",
+   "version": "2.4"
+}
